@@ -8,15 +8,13 @@
 <tbody>
 <tr>
 <td>
-<h1>VBoxTool</h1>Easy control of virtual machines of <a href="http://www.virtualbox.org/">VirtualBox</a>&nbsp;<img src="images/icon-external-link.png" alt="icon-external-link.png"> (virtualization solution) on a Linux headless server. <br><br>Currently
-VirtualBox lacks a decent management environment for controlling those
-sessions on a headless server environment in an easy way.&nbsp;VBoxTool
-mimics&nbsp;<a href="http://virt-manager.et.redhat.com/">Virtual Machine Manager</a> <img src="images/icon-external-link.png" alt="icon-external-link.png">&nbsp;which
+<h1>VBoxTool</h1>Easy control of virtual machines of <a href="http://www.virtualbox.org/">VirtualBox</a>&nbsp;<img src="images/icon-external-link.png" alt="icon-external-link.png"> (virtualization solution) on a Linux headless server, published as free and open source software.<br><br>Currently
+VirtualBox lacks a decent management environment for controlling virtual
+sessions on a headless server environment.&nbsp;VBoxTool
+mimics partly <a href="http://virt-manager.et.redhat.com/">Virtual Machine Manager</a> <img src="images/icon-external-link.png" alt="icon-external-link.png"> which
 controls sessions for other virtualization solutions like qemu, kvm,
 etc. Unfortunately,&nbsp;VirtualBox is not in the list of supported
-engines (nor will be in the near future). <br><br>The VBoxTool
-framework controls running sessions of VirtualBox in a headless
-(server) environment. Heart of the framework is a script with which it
+engines (nor will be in the near future). <br><br>Heart of the framework is a script with which it
 is possible to start, stop, save, backup and show status of registered
 sessions in batch mode; execution is by command line. Next to develop
 is a webserver which points to the control script. With this you can
@@ -28,20 +26,18 @@ options like session to start, vrdp port, etc. can be controlled by a
 configuration file.<br><br><code><small>~$ vbox --help<br>Usage: vbox OPTION [session]<br>Show info about VirtualBox sessions or control those sessions.<br><br>Options:<br>&nbsp; show&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show status of all sessions.<br>&nbsp; showrun&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Only show status of running sessions.<br>&nbsp; start [session]&nbsp;&nbsp; Start all saved sessions or only the given session.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 When no session name is given, all saved sessions will be<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 started; powered off and aborted sessions are left alone.<br>&nbsp; autostart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starts all sessions in a predefined configuration file.<br>&nbsp; save [session]&nbsp;&nbsp;&nbsp; Save all running sessions or only the given session.<br>&nbsp; stop [session]&nbsp;&nbsp;&nbsp; Stop all running sessions or only the given session.<br>&nbsp; backup [session]&nbsp; Backup all running sessions or only the given session.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Running sessions are saved and started after backup has<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; completed.<br>&nbsp; --version|version Version info.<br>&nbsp; --help|help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This help.<br><br>Through autostart, sessions can be started in a controlled way: only the<br>sessions in the configuration file will be started. As a bonus, the vrdp port<br>(also configurable) can be set at startup time.<br>Option autostart depends on a configuration file, /etc/vbox/machines.conf.<br>Each line in this file is a separate machine. Structure of each line:<br>&lt;session-name&gt;,&lt;vrdp-port&gt;. The given vrdp-port is set statically to the<br>session, prior to starting; state is discarded when session is in savestate.<br><br>Example for /etc/vbox/machines.conf:<br>Ubuntu Desktop,3391<br>Ubuntu JeOS,3392<br>Do not use spaces before and after the ',' delimiter.<br><br>Saving sessions is preferred above stopping: this is faster when restoring<br>and safer because session can appear to be cold booted.</small></code><h2>Future extension(s)</h2><ul><li>Preconfigured portforwarding</li><li>Backup, second approach: incremental backup</li><li>Backup, third approach: online backup</li><li>Implement 'metrics' command</li><li>Plugin for munin (system monitoring)</li><li>Webserver</li></ul>See <a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/todo.txt?view=markup">todo.txt</a> for details.<br>
-<h2>Requirements</h2>
-<ul>
-<li>Linux (kernel &amp; distro agnostic, although developed and tested on Ubuntu)</li>
-<ul></ul>
-<li>VirtualBox 1.6</li>
+Running sessions are saved and started after backup has<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; completed.<br>&nbsp; --version|version Version info.<br>&nbsp; --help|help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This help.<br><br>Through autostart, sessions can be started in a controlled way: only the<br>sessions in the configuration file will be started. As a bonus, the vrdp port<br>(also configurable) can be set at startup time.<br>Option autostart depends on a configuration file, /etc/vbox/machines.conf.<br>Each line in this file is a separate machine. Structure of each line:<br>&lt;session-name&gt;,&lt;vrdp-port&gt;. The given vrdp-port is set statically to the<br>session, prior to starting; state is discarded when session is in savestate.<br><br>Example for /etc/vbox/machines.conf:<br>Ubuntu Desktop,3391<br>Ubuntu JeOS,3392<br>Do not use spaces before and after the ',' delimiter.<br><br>Saving sessions is preferred above stopping: this is faster when restoring<br>and safer because session can appear to be cold booted.</small></code><h2>Future extension(s)</h2><ul><li>Preconfigured portforwarding</li><li>Backup, second approach: incremental backup</li><li>Backup, third approach: online backup</li><li>Implement 'metrics' command</li><li>Plugin for munin (system monitoring)</li><li>Webserver</li></ul>See <a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/todo.txt?view=markup">todo.txt</a>&nbsp;<img src="images/icon-external-link.png" alt="icon-external-link.png"> for details.<br>
+<h2>Facts<br></h2>
+<ul><li>Minimal requirements:</li><ul><li><span style="font-weight: bold;">Linux</span> (kernel &amp; distro agnostic, although developed and tested only on Ubuntu)</li><li style="font-weight: bold;">VirtualBox 1.6.x</li></ul><li>Project status: <span style="font-weight: bold;">Beta</span>. Script&nbsp;is available for testing purposes.</li><li>Copyright: <span style="font-weight: bold;">Mark Baaijens</span> <a href="mailto:mark.baaijens@gmail.com">mark.baaijens@gmail.com</a></li><li>License: <span style="font-weight: bold;">GNU Public Licence version 3</span></li>
+
+
 <ul></ul>
 </ul><a href="system-requirements.html"></a>
 <h2>News</h2>
 <ul>
 <li>2008-09-20 Start of the VBoxTool project</li>
-</ul>See <a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/changelog.txt?view=markup">changelog.txt</a> for revision information.<br><h2>Project status<br>
-</h2>
-<span style="font-weight: bold;">Beta</span>. Script&nbsp;is available for testing purposes.<h2>Resources</h2>
+</ul>See <a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/changelog.txt?view=markup">changelog.txt</a> 
+<img src="images/icon-external-link.png" alt="icon-external-link.png">&nbsp;for revision information.<span style="font-weight: bold;"><br></span><h2>Resources</h2>
 <ul>
 <li><a href="http://sourceforge.net/projects/vboxtool">Sourceforge
 project page</a> <img src="images/icon-external-link.png" alt="icon-external-link.png"></li><li><a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/trunk/readme.txt?view=markup">Installation guidelines (readme.txt)</a>  <img src="images/icon-external-link.png" alt="icon-external-link.png"></li></ul><h2>Links</h2><ul><li><a href="http://www.virtualbox.org/">VirtualBox</a>  <img src="images/icon-external-link.png" alt="icon-external-link.png"></li><li><a href="http://virt-manager.et.redhat.com/">Virtual Machine Manager</a> <img src="images/icon-external-link.png" alt="icon-external-link.png"></li>
