@@ -9,15 +9,18 @@
 <tbody>
 <tr>
 <td>
-<h1>Port forwarding</h1>
-When a session is running within VirtualBox and it is doing a server
+<h1>Port forwarding&nbsp;</h1>
+<hr style="width: 100%; height: 0px;">
+<p style="text-align: right;"><a href="index.html">Home</a>&nbsp;</p>
+When a session is
+running within VirtualBox and it is doing a server
 task
 like web or database serving, clients like browsers, etc. must be able
 to reach the session
 from the outside. To
 facilitate this, host interfacing or port forwarding can be used.<br>
 <br>
-Possible usage includes (just a few examples):<br>
+Possible usage includes (just a few examples):
 <ul>
 <li>web serving (port 80)</li>
 <li>database serving</li>
@@ -59,11 +62,15 @@ is needed&nbsp;</li>
 IP address;&nbsp;configuration procedure&nbsp;is different on
 different OS's, even different between several Linux distro's</li>
 <li>not able to retrieve session IP address from the
-outside;&nbsp;except by a brute force port scan on an entire network segment</li>
-<li>limited portability due to the session's static IP address; when the session is moved to another server, it is
+outside;&nbsp;except by a brute force port scan on an entire
+network segment</li>
+<li>limited portability due to the session's static IP
+address; when the session is moved to another server, it is
 not certain if that session works right away because the configured
 static IP address may be in another network segment, possible without a
-proper gateway or net mask configuration, thus not working</li><li>exposes implementation of the network service, i.e. implemented as a separate, virtual machine</li>
+proper gateway or net mask configuration, thus not working</li>
+<li>exposes implementation of the network service, i.e.
+implemented as a separate, virtual machine</li>
 </ul>
 <h2>Port forwarding</h2>
 When a session in configured with port forwarding, it is possible to
@@ -94,7 +101,10 @@ session does not have to be configured with a&nbsp;static IP-address</li>
 <li>no need to retrieve the session's IP address</li>
 <li>flexible portability; when
 the session is moved to another server, it is very easy to re-configure
-because port forwarding configuration is no part of the session (vdi file)</li><li>hides implementation; from the client's view, the server just publishes a network service</li>
+because port forwarding configuration is no part of the session (vdi
+file)</li>
+<li>hides implementation; from the client's view, the
+server just publishes a network service</li>
 </ul>
 <h3>Drawback(s)</h3>
 <ul>
@@ -102,13 +112,18 @@ because port forwarding configuration is no part of the session (vdi file)</li><
 naturally has another host IP address, all clients (browsers, etc.)
 must also point to the new address, requiring reconfiguration on
 each&nbsp;client; however, this can be circumvented by using
-another port forwarding schema on top of the existing one on&nbsp;the router serving the network
+another port forwarding schema on top of the existing one
+on&nbsp;the router serving the network
 segment of the VirtualBox host</li>
 </ul>
-<h2>How fits VBoxTool in this?</h2>Port forwarding has huge benefits
+<h2>How fits VBoxTool in this?</h2>
+Port forwarding has huge benefits
 above host interfacing: far more flexible, no conflicts with other
 software, scalable, easy to configure, good portability of sessions,
-etc.<br><br>Although port forwarding configuration only requires just three commands, VBoxTool
+etc.<br>
+<br>
+Although port forwarding configuration only requires just three
+commands, VBoxTool
 makes it
 even easier by automating this process. VBoxTool is capable for
 configuring&nbsp;port forwarding for
