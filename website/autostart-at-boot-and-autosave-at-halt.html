@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Autostart at boot, autosave at halt</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="main.css" rel="stylesheet" type="text/css"></head>
+<body>
+<table style="width: 700px; text-align: left; margin-left: auto; margin-right: auto;" align="center" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>
+<h1>Autostart at boot, autosave at halt</h1>
+<hr style="width: 100%; height: 0px;">
+<p style="text-align: right;"><a href="index.html">Home</a>&nbsp;</p>VBoxTool is capable of the following:<br><ul><li><span style="font-weight: bold;">Autostart at host boot</span>. When the host boots, all sessions registered in <code><small>/etc/vboxtool/machines.conf</small></code>&nbsp;will be started in the background, issuing a 'vboxtool autostart' command under the named vbox_user in <code><small>/etc/vboxtool/vboxtool.conf</small></code>.&nbsp;</li><li><span style="font-weight: bold;">Autosave at host halt</span>. When the host has a controlled down, i.e. halted, all running sessions are automatically saved.</li></ul>But when and why does one needs these features?<br><h2>Benefits</h2><ul><li><span style="font-weight: bold;">Servers become self proficient</span>.
+A server, hosting VirtualBox and running sessions in a production
+environment, can be rebooted without knowing all the intricate details
+of bringing down the individual sessions. Even when an unexpected down
+happened&nbsp;e.g. by a power surge, sessions come up when the machine
+is booted, even when it is done by unqualified personnel: pushing a power button&nbsp;is not that complicated I presume.<span style="font-weight: bold;"></span></li><li><span style="font-weight: bold;">Save time to access sessions on a desktop machine</span>.
+When a session is automatically opened in the background at boot, it
+can be easily accessed by rdesktop or similar rdp-viewer, without any
+delay because the session is already up-and-running, waiting for anyone
+to access it.</li><li><span style="font-weight: bold;">Be sure sessions are always saved at halt</span>.
+When sessions are running, be it headless or with GUI, be it on a
+server or a desktop, it is sure all sessions will be saved when the
+machine is downed. Normally, sessions become in&nbsp;'aborted' state when nothing is done as the machine is going down. Bringing sessions automatically into savestate&nbsp;saves time when these sessions are started
+again after the next boot because the sessions don't have to boot, but also
+prevents data loss.</li></ul></td></tr></tbody></table><br>
+</body></html>
