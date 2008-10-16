@@ -1,21 +1,5 @@
 Todo:
 
-- preconfigured portforwarding
-  - settings can be set in savestate, not while running
-  - only for host ports > 1024 (nat restriction)
-  - write settings:
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/Protocol" TCP
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/HostPort" 2022
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/GuestPort" 22
-    - 'tcp-2022-22' is arbitrary
-  - read settings:
-    VBoxManage getextradata "Ubuntu JeOS" enumerate | grep "VBoxInternal/Devices"
-  - reset settings:
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/Protocol" 
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/HostPort" 
-    VBoxManage setextradata "Ubuntu JeOS" "VBoxInternal/Devices/pcnet/0/LUN#0/Config/tcp-2022-22/GuestPort"
-  - config file format: 
-    <session name>,<vrdp port>,[<host port>-<guest port>|...] -> Ubuntu JeOS,3393,2022-22|80-80
 - vbox backup, second approach: incremental backup
   - basic procedure 'vbox backup' 
     - save session 'savestate'
@@ -80,11 +64,13 @@ Todo:
 Tasks:
 - test:
   - restore backup
-- auto-start vbox-sessions on host-boot: http://forums.virtualbox.org/viewtopic.php?t=6663
-- auto-stop when host goes down
-  - see /etc/init.d/vboxdrv, function stop_vms (called in 'stop'-section)
-  - must be configured
-    - seems to works with one session only
-    - when there are more than one session, sessions goes into 'aborted' state
-    - investigate
- 
+
+- name vboxcontrol on website: http://farfewertoes.com/code/vboxcontrol/
+- Alternative for wait command:
+    wait_for_closing_machines() {
+        RUNNING_MACHINES=`$SU "$VBOXMANAGE list runningvms" | wc -l`
+        if [ $RUNNING_MACHINES != 0 ]; then
+            sleep 5
+            wait_for_closing_machines
+        fi
+    }
