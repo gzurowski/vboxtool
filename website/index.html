@@ -32,39 +32,56 @@ Heart of the framework is a script&nbsp;which can do several
 actions (start, save, backup, etc.) on all registered
 VirtualBox sessions in batch mode. It is a wrapper around VBoxManage
 (the
-commandline interface of VirtualBox), so&nbsp;execution is also by
+command line interface of VirtualBox), so&nbsp;execution is also by
 command
 line.&nbsp;<br>
 <ul>
 <li><span style="font-weight: bold;">Show
-info of all registered sessions</span>.
-Name, status (running, saved, etc.) and other info like&nbsp;the
+info</span>.
+Name, status (running, saved, etc.) and other info of all registered
+sessions like&nbsp;the
 configured VRDP port are
-shown with the command 'vbox show'. When a session is running, also CPU
-load and memory usage are shown. As an alternative,&nbsp;'vbox
+shown with the command 'vboxtool show'. When a session is running, also
+CPU
+load and memory usage are shown. As an alternative,&nbsp;'vboxtool
 showrun' shows info only of running sessions.</li>
 <li><span style="font-weight: bold;">Mass
 operation: save, start, stop</span>. Save all running sessions
-with one command: 'vbox save'. Start all saved sessions with 'vbox
-start'.&nbsp;Stop all running sessions with 'vbox stop'.</li>
+with one command without any configuration: 'vboxtool save'. Start all
+saved sessions with 'vboxtool
+start'.&nbsp;Stop all running sessions with 'vboxtool stop'.</li>
 <li><span style="font-weight: bold;">Mass
 backup</span>.
-Backup all sessions using rsync with one command: 'vbox backup'. When a
+Backup all sessions using rsync with one command: 'vboxtool backup'.
+When a
 session is running, it is saved and restarted after the backup. The
-next level of backup, could mean that online backup (thus without
-bringing the session offline) is possible*.</li>
-<li><span style="font-weight: bold;">Autostart</span>.
-Controlled start of several sessions, defined in a configuration file.
-Only sessions named in that file will be started by 'vbox autostart'.
-Configuration takes place&nbsp;in&nbsp; <code><small>/etc/vbox/machines.conf</small></code>.</li>
+next level of backup, could mean that on line backup (thus without
+bringing the session off line) is possible*.</li>
+<li><span style="font-weight: bold;">Batch
+start</span>.
+Controlled start of several sessions, defined in a configuration file, <code><small>/etc/vboxtool/machines.conf</small></code>.
+Only sessions named in that file will be started by 'vboxtool
+autostart'.</li>
 <li><span style="font-weight: bold;">Mass
-configuration: VRDP port, port forwarding</span>. Configure VRDP
+configuration of VRDP port and&nbsp;port forwarding</span>.
+Configure VRDP
 port and <a href="portforwarding.html">port forwarding</a>
 for
-all sessions, all at once in one command:&nbsp;'vbox autostart'.
-Configuration takes place&nbsp;in&nbsp;<code>/etc/vbox/machines.conf</code>.
+all sessions, all at once in one command:&nbsp;'vboxtool
+autostart'.
+Configuration takes place&nbsp;in&nbsp;<code>/etc/vboxtool/machines.conf</code>.
 When using&nbsp;port forwarding, there's no need for
 host interfacing anymore (in Linux, a tedious, complex task).</li>
+<li><span style="font-weight: bold;">Autostart
+at host boot</span>. When the host boots, all sessions registered
+in <code><small>/etc/vboxtool/machines.conf</small></code>&nbsp;will
+be <a href="autostart-at-boot-and-autosave-at-halt.html">started
+in the background</a>, issuing a 'vboxtool autostart' command
+under the named vbox_user in <code><small>/etc/vboxtool/vboxtool.conf</small></code>.&nbsp;</li>
+<li><span style="font-weight: bold;">Autosave
+at host halt</span>. When the host has a controlled down, i.e.
+halted, all running sessions are <a href="autostart-at-boot-and-autosave-at-halt.html">automatically
+saved</a>.</li>
 <li><span style="font-weight: bold;">*System
 monitoring</span>.
 Monitor server status, session cpu load and memory in a graphical
@@ -81,67 +98,11 @@ requiring shell access.</li>
 </ul>
 * Not (yet) implemented.
 <h2>Usage</h2>
-<small><code>$ vbox --help<br>
-Usage: vbox OPTION [session]<br>
-Show info about VirtualBox sessions or control those sessions.<br>
-<br>
-Options:<br>
-&nbsp;
-show&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Show status of all sessions.<br>
-&nbsp;
-showrun&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Only show status of running sessions.<br>
-&nbsp; start [session]&nbsp;&nbsp; Start all saved sessions
-or only the given session.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-When no session name is given, all saved sessions will be<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-started; powered off and aborted sessions are left alone.<br>
-&nbsp;
-autostart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Starts all sessions in a predefined configuration file.<br>
-&nbsp; save [session]&nbsp;&nbsp;&nbsp; Save all
-running sessions or only the given session.<br>
-&nbsp; stop [session]&nbsp;&nbsp;&nbsp; Stop all
-running sessions or only the given session.<br>
-&nbsp; backup [session]&nbsp; Backup all running sessions or
-only the given session.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Running sessions are saved and started after backup has<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-completed.<br>
-&nbsp; --version|version Version info.<br>
-&nbsp;
---help|help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-This help.<br>
-<br>
-Note on autostart. Sessions can be started in a controlled way, only the<br>
-sessions in the configuration file will be started. As a bonus, the
-VRDP port<br>
-(also configurable) can be set at startup time. Option autostart
-depends on a<br>
-configuration file, /etc/vbox/machines.conf. The given VRDP port is set
-<br>
-statically to the session, prior to starting; state is discarded when
-session<br>
-is in savestate.<br>
-<br>
-Notes on /etc/vbox/machines.conf:<br>
-- Each line in this file is a separate machine.<br>
-- Structure of each line: &lt;session name&gt;,&lt;vrdp
-port&gt;,&lt;host port&gt;-&lt;guest port&gt;|...<br>
-- Do not use spaces before and after the ',' delimiter.<br>
-- Lines can be commented out by '#'<br>
-<br>
-Example for /etc/vbox/machines.conf:<br>
-Ubuntu Desktop,3391<br>
-Ubuntu JeOS,3392,2022-22|80-80<br>
-<br>
-Note on stopping sessions. Saving sessions is preferred above stopping:
-this<br>
-is faster when restoring and safer because session can appear to be
-cold booted.</code></small>
+<small><code>$ vboxtool help<br>Usage: vboxtool OPTION [session]<br>Show info about VirtualBox sessions or control those sessions.<br><br>Options:<br>&nbsp; show&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show status of all sessions.<br>&nbsp; showrun&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Only show status of running sessions.<br>&nbsp; start [session]&nbsp;&nbsp; Start all saved sessions or only the given session.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+When no session name is given, all saved sessions will be<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+started; powered off and aborted sessions are left alone.<br>&nbsp; autostart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starts all sessions in a predefined configuration file.<br>&nbsp; save [session]&nbsp;&nbsp;&nbsp; Save all running sessions or only the given session.<br>&nbsp; stop [session]&nbsp;&nbsp;&nbsp; Stop all running sessions or only the given session.<br>&nbsp; backup [session]&nbsp; Backup all running sessions or only the given session.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Running sessions are saved and started after backup has<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; completed.<br>&nbsp; --version|version Version info.<br>&nbsp; --help|help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This help.<br><br>Note on autostart. Sessions can be started in a controlled way, only the<br>sessions in the configuration file will be started. As a bonus, the VRDP port<br>(also configurable) and port forwarding can be set at startup time. These<br>options are controlled by /etc/vboxtool/machines.conf. The given ports<br>are set statically to the session, prior to starting. When VRDP port has to be <br>changed, state is discarded when session is in savestate.<br><br>Notes on /etc/vboxtool/machines.conf:<br>- Each line in this file is a separate machine.<br>- Structure of each line: &lt;session name&gt;,&lt;vrdp port&gt;,&lt;host port&gt;-&lt;guest port&gt;|...<br>- Do not use spaces before and after the ',' delimiter.<br>- Lines can be commented out by '#'<br><br>Example for /etc/vboxtool/machines.conf:<br>Ubuntu Desktop,3391<br>Ubuntu JeOS,3392,2022-22|80-80<br><br>Note on stopping sessions. Saving sessions is preferred above stopping: this<br>is faster when restoring and safer because session can appear to be cold booted.<br><br>VBoxTool is capable for autostart sessions at boot time and autosave sessions<br>when host is stopped. This depends on /etc/vboxtool/vboxtool.conf.<br>Structure of vboxtool.conf: vbox_user='&lt;user name&gt;' (with quotes). Fill for<br>&lt;user name&gt; the name of the user under which sessions are installed/running.<br><br>When vboxtool.conf is not present, no session will start at boot, nor will<br>auto save on host down take place. When vboxtool.conf is present, all sessions<br>in machines.conf will be started because actually, a 'vboxtool autostart'<br>command is issued. Saving sessions when host goes down does not depend on<br>machines.conf: all running sessions will be saved by a 'vboxtool save' command.<br><session name=""><vrdp port=""><host port=""><guest port=""><user name=""><user name="">
+</user></user></guest></host></vrdp></session></code></small>
 <h2>Facts<br>
 </h2>
 <ul>
@@ -159,38 +120,52 @@ Script&nbsp;is available for testing purposes.</li>
 <li>Copyright: <span style="font-weight: bold;">Mark
 Baaijens</span> <a href="mailto:mark.baaijens@gmail.com">mark.baaijens@gmail.com</a></li>
 <li>License: <span style="font-weight: bold;">GNU
-Public Licence version 3</span></li>
+Public License version 3</span></li>
 <ul>
 </ul>
 </ul>
 <h2>News</h2>
 <ul>
-<li>2008-10-02 Version 0.2</li>
+<li>2008-10-16<span style="font-weight: bold;">
+Version 0.3</span></li>
+<ul>
+<li><a href="autostart-at-boot-and-autosave-at-halt.html">Autostart
+at host boot, autosave at host halt</a></li>
+<li>Compatibility break with 0.2: renamed main script
+'vbox' to 'vboxtool', moved config folder from '/etc/vbox' to
+'/etc/vboxtool'</li>
+</ul>
+<li>2008-10-02 <span style="font-weight: bold;">Version
+0.2</span></li>
 <ul>
 <li>Configurable <a href="portforwarding.html">port
 forwarding</a></li>
-<li>Lines in <small><code>/etc/vbox/machines.conf</code></small>
+<li>Lines in <small><code>/etc/vboxtool/machines.conf</code></small>
 can be commented out by '#'</li>
 </ul>
-<li>2008-09-23 Version 0.1</li>
+<li>2008-09-23 <span style="font-weight: bold;">Version
+0.1</span></li>
 <ul>
 <li>First public
 release</li>
 </ul>
-<li>2008-09-20 Start of the VBoxTool project</li>
+<li>2008-09-20 <span style="font-weight: bold;">Start
+of the VBoxTool project</span></li>
 </ul>
 See <a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/trunk/changelog.txt?view=markup">changelog.txt</a>
 <img src="images/icon-external-link.png" alt="icon-external-link.png">&nbsp;for revision
 information.<span style="font-weight: bold;"><br>
 </span>
-<h2>Resources</h2>
+<h2>Documentation</h2>
 <ul>
+<li><a href="portforwarding.html">Port
+forwarding</a></li>
+<li><a href="autostart-at-boot-and-autosave-at-halt.html">Autostart
+at boot, autosave at halt</a></li>
 <li><a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/trunk/readme.txt?view=markup">Installation
 guidelines</a> <img src="images/icon-external-link.png" alt="icon-external-link.png"></li>
 <li><a href="http://vboxtool.svn.sourceforge.net/viewvc/vboxtool/todo.txt?view=markup">Things
 to do (todo.txt)</a> <img src="images/icon-external-link.png" alt="icon-external-link.png">&nbsp;</li>
-<li><a href="portforwarding.html">Port
-forwarding</a></li>
 </ul>
 <h2>Links</h2>
 <ul>
