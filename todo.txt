@@ -65,7 +65,6 @@ Tasks:
 - test:
   - restore backup
 
-- name vboxcontrol on website: http://farfewertoes.com/code/vboxcontrol/
 - Alternative for wait command:
     wait_for_closing_machines() {
         RUNNING_MACHINES=`$SU "$VBOXMANAGE list runningvms" | wc -l`
