@@ -1,0 +1,11 @@
+Download code from subversion:
+svn co https://vboxtool.svn.sourceforge.net/svnroot/vboxtool vboxtool
+
+Upload website:
+rsync -urv --delete --rsh="ssh" --exclude=".svn" ~/coda/vboxtool/website/ markbaa,vboxtool@web.sourceforge.net:/home/groups/v/vb/vboxtool/htdocs
+Optional: a note about this edit for the page history log
+
+How to create a release. 
+Prepare code. 
+Check $version in trunk/script/vbox ... 
+Add to Notes + Change log "See http://vboxtool.svn.sourceforge.net/viewvc/ ...
