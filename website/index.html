@@ -2,6 +2,7 @@
 <html><head><title>VBoxTool</title>
 
 
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="main.css" rel="stylesheet" type="text/css"></head><body>
 <table style="width: 700px; text-align: left; margin-left: auto; margin-right: auto;" align="center" border="0" cellpadding="2" cellspacing="2">
@@ -94,82 +95,6 @@ requiring shell access.</strike> ... This will be not developed anymore, because
 * Not (yet) implemented.
 <h2>Usage</h2>
 <small><code>$ vboxtool --help<br><span style="font-family: monospace;">Usage: vboxtool OPTION [session]<br>
-Show info about VirtualBox sessions or control those sessions.<br>
-      <br>
-Options:<br>
-&nbsp; show&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show status of all sessions.<br>
-&nbsp; showrun&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Only show status of running sessions.<br>
-&nbsp; showconfig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show configuration.<br>
-&nbsp; start [session]&nbsp;&nbsp; Start all saved sessions or only the given session.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-When no session name is given, all saved sessions will be<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-started; powered off and aborted sessions are left alone.<br>
-&nbsp; autostart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starts all sessions in a predefined configuration file.<br>
-&nbsp; save [session]&nbsp;&nbsp;&nbsp; Save all running sessions or only the given session.<br>
-&nbsp; stop [session]&nbsp;&nbsp;&nbsp; Stop all running sessions or only the given session.<br>
-&nbsp; backup [session]&nbsp; Backup all running sessions or only the given session.<br>
-&nbsp; --version|version Version info.<br>
-&nbsp; --help|help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This help.<br>
-      <br>
-*Configuration. vboxtool depends on two config files, located in /etc/vboxtool.<br>
-      <br>
-Configuration file /etc/vboxtool/machines.conf:<br>
-- each line in this file is a separate machine<br>
-- structure of each line: &lt;session name&gt;,&lt;vrde-port&gt;,&lt;host port&gt;-&lt;guest port&gt;|...<br>
-- the delimiter ',' between name and VRDE-port only required when configuring<br>
-&nbsp; portforwarding<br>
-- do not use spaces before and after the first ',' delimiter<br>
-- lines can be commented out by '#'<br>
-      <br>
-Example for /etc/vboxtool/machines.conf:<br>
-Ubuntu Desktop #1<br>
-Ubuntu Desktop #2,3391<br>
-Ubuntu JeOS #1,3392,2022-22|80-80<br>
-Ubuntu JeOS #2,,2022-22|80-80<br>
-      <br>
-Example for /etc/vboxtool/vboxtool.conf<br>
-vbox_user='user'<br>
-backup_folder=/home/user/vboxbackup<br>
-      <br>
-*Autostart. Sessions can be started in a controlled way from the command line,<br>
-only the echo sessions in /etc/vboxtool/machines.conf will be started. As a bonus,<br>
-the VRDE port and port forwarding can be set at startup time. These<br>
-options are controlled by /etc/vboxtool/machines.conf. The given ports<br>
-are set statically to the session, prior to starting. When VRDE port has to be <br>
-changed, state is discarded when session is in savestate.<br>
-      <br>
-*Start at boot, save on halt. VBoxTool is capable for autostart sessions at<br>
-boot time and autosave sessions when host is stopped. This depends on <br>
-/etc/vboxtool/vboxtool.conf. In here, the variable vbox_user must be filled:<br>
-vbox_user='&lt;user name&gt;'<br>
-Note the quotes. Fill for &lt;user name&gt; the name of the user under which<br>
-sessions are installed/running.<br>
-      <br>
-When vboxtool.conf is not present, no session will start at boot, nor will<br>
-auto save on host down take place. When vboxtool.conf is present, all sessions<br>
-in machines.conf will be started because actually, a 'vboxtool autostart'<br>
-command is issued. Saving sessions when host goes down does not depend on<br>
-machines.conf: all running sessions will be saved by a 'vboxtool save' command.<br>
-      <br>
-*Stopping sessions. Saving sessions is preferred above stopping: this<br>
-is faster when restoring and safer because session can appear to be cold booted.<br>
-      <br>
-*The backup command copies all session files to a safe location. This includes<br>
-the configuration file(s), main VDI file and all snapshots. Running sessions<br>
-are saved and started after backup has completed. The default backup folder is<br>
-relative to the vbox folder: &lt;vbox_folder&gt;/.backup. Underneith, subfolders VDI and <br>
-Machines are created.<br>
-Backups can be automated by putting something like in /etc/crontab:<br>
-05 2&nbsp;&nbsp;&nbsp; * * *&nbsp;&nbsp; &lt;user name&gt;&nbsp;&nbsp;&nbsp; vboxtool backup &amp;<br>
-A different backup folder can be used, by defining this in /etc/vboxtool/vboxtool.conf:<br>
-backup_folder=/home/user/vboxbackup<br>
-      <br>
-*Logging. All commands will be logged to /home/user/.VirtualBox/vboxtool.log<br>
-      <br>
-See http://vboxtool.sourceforge.net for more details.<br>
-user@asus-mark:~$ vboxtool --help<br>
-Usage: vboxtool OPTION [session]<br>
 Show info about VirtualBox sessions or control those sessions.<br>
       <br>
 Options:<br>
